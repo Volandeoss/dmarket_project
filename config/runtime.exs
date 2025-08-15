@@ -1,5 +1,5 @@
 import Config
-
+import Dotenvy
 # config/runtime.exs is executed for all environments, including
 # during releases. It is executed after compilation and before the
 # system starts, so it is typically used to load production configuration
@@ -20,6 +20,16 @@ if System.get_env("PHX_SERVER") do
   config :elixir_app, ElixirAppWeb.Endpoint, server: true
 end
 
+if config_env() == :dev do
+  source!([".env"])
+
+  config :elixir_app,
+    dmarket_api: [
+      public_key: env!("DMARKET_PUBLIC_KEY", :string!),
+      private_key: env!("DMARKET_PRIVATE_KEY", :string!)
+    ]
+end
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||
@@ -27,6 +37,10 @@ if config_env() == :prod do
       environment variable DATABASE_URL is missing.
       For example: ecto://USER:PASS@HOST/DATABASE
       """
+
+  config :elixir_app,
+    dmarket_public_key: System.fetch_env!("DMARKET_PUBLIC_KEY"),
+    dmarket_private_key: System.fetch_env!("DMARKET_PRIVATE_KEY")
 
   maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
 

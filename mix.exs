@@ -66,7 +66,10 @@ defmodule ElixirApp.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
-      {:moon_live, "~> 3.14", organization: "coingaming"}
+      {:moon_live, "~> 3.14", organization: "coingaming"},
+      {:httpoison, "~> 2.2"},
+      {:enacl, "~> 1.2"},
+      {:dotenvy, "~> 0.8.0"}
     ]
   end
 
